@@ -1,0 +1,67 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build-and-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+      - id: setup-qume
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        
+      - id: setup-builder
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          buildkitd-flags: --debug
+      - name: Print Builder Name
+        run: echo ${{ steps.setup-builder.outputs.name }}
+      - id: build
+        name: Build
+        uses: docker/build-push-action@v3
+        with:
+          no-cache: true
+          platforms: linux/amd64,linux/arm64/v8
+          context: .
+          push: true
+          tags: ${{ secrets.DOKER_IMAGE_TAG }}
+      - name: Print Image Name
+        run: |
+          echo "Image ID: ${{ steps.build.outputs.imageid }} 
+          echo "Image digest : ${{ steps.build.outputs.digest }} 
+
+      - name: Connect to remote machine and deploy
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            export TG_BOT_TOKEN=${{ secrets.TG_BOT_TOKEN }}
+            APP_DIR=$PWD/docker-deployments/apps/bots/telegram/telegram-jitsi-meet
+            mkdir -p $APP_DIR
+            cd $APP_DIR
+            curl -o docker-compose.yaml ${{ secrets.DOCKER_COMPOSE_FILE_URI }}
+            docker pull ${{ secrets.DOKER_IMAGE_TAG }}
+            docker compose up -d
+            docker system prune -f
+
+
+    
