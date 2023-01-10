@@ -26,8 +26,6 @@ async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     meet_name = re.sub('[^A-Za-z0-9]', '-', meet_name)
     meet_url = f"https://meet.jit.si/{meet_name}"
     reply_msg = dedent(f"""
-        ❄️🌲☃️❄️🌲❄️☃️🌲❄️
-
         <b>✨✨{chat_name}✨✨</b>
         <b>📢Start & join🤳</b>
         🕶Premium video calls.
