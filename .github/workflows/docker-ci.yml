@@ -53,21 +53,23 @@ jobs:
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
             #notifications
-            New image tag published
-             - Image ID: ${{ steps.build.outputs.imageid }} 
+            <b>New image tag published</b>
+             - Image ID: ${{ secrets.DOKER_IMAGE_TAG }} 
              - Image digest: ${{ steps.build.outputs.digest }}
             See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
       - name: Print Image Name
         run: |
           echo "Image ID: ${{ steps.build.outputs.imageid }} 
           echo "Image digest : ${{ steps.build.outputs.digest }} 
-      - name: Connect to remote machine and deploy
+      - id: deploy
+        name: Connect to remote machine and deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
+          script_stop: true
           script: |
             export TG_BOT_TOKEN=${{ secrets.TG_BOT_TOKEN }}
             APP_DIR=$PWD/docker-deployments/apps/bots/telegram/telegram-jitsi-meet
@@ -84,7 +86,9 @@ jobs:
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
             #notifications
-            The bot application has been redeployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
+            <b>Deployed!</b>
+
+            The bot has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
 
 
     
