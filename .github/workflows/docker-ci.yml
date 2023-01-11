@@ -55,7 +55,7 @@ jobs:
             #notifications
             New image tag published
              - Image ID: ${{ steps.build.outputs.imageid }} 
-             - Image digest : ${{ steps.build.outputs.digest }}
+             - Image digest: ${{ steps.build.outputs.digest }}
             See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
       - name: Print Image Name
         run: |
