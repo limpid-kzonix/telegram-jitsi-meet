@@ -15,10 +15,10 @@ jobs:
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
             #notifications
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
-            Repository: ${{ github.repository }}
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            🧟 ${{ github.actor }} created commit:
+            ✒ Commit message: ${{ github.event.commits[0].message }}
+            🗃 Repository: ${{ github.repository }}
+            📊 See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
       - id: checkout
         name: Checkout
         uses: actions/checkout@v3
@@ -53,10 +53,12 @@ jobs:
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
             #notifications
-            <b>New image tag published</b>
+            🐳 New image tag published!
+            
              - Image ID: ${{ secrets.DOKER_IMAGE_TAG }} 
              - Image digest: ${{ steps.build.outputs.digest }}
-            See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
+            
+            🐋 See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
       - name: Print Image Name
         run: |
           echo "Image ID: ${{ steps.build.outputs.imageid }} 
@@ -86,9 +88,9 @@ jobs:
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
             #notifications
-            <b>Deployed!</b>
+            🚀 Deployed!
 
-            The bot has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
+            🤖 The bot has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
 
 
     
