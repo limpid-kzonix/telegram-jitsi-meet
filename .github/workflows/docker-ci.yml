@@ -14,7 +14,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_NOTIFY_CHAT }}
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
-            #notifications #github-actions
+            #notifications
             ${{ github.actor }} created commit:
             Commit message: ${{ github.event.commits[0].message }}
             Repository: ${{ github.repository }}
@@ -52,8 +52,10 @@ jobs:
           to: ${{ secrets.TELEGRAM_NOTIFY_CHAT }}
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
-            #notifications #github-actions
-            New image tag `${{ secrets.DOKER_IMAGE_TAG }}`
+            #notifications
+            New image tag published
+             - Image ID: ${{ steps.build.outputs.imageid }} 
+             - Image digest : ${{ steps.build.outputs.digest }}
             See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
       - name: Print Image Name
         run: |
@@ -81,7 +83,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_NOTIFY_CHAT }}
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
-            #notifications #github-actions
+            #notifications
             The bot application has been redeployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
 
 
