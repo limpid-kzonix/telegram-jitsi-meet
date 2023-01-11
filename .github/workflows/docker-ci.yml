@@ -3,15 +3,10 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
-
   build-and-deploy:
-
     runs-on: ubuntu-latest
-
     steps:
       - id: checkout
         name: Checkout
@@ -24,7 +19,6 @@ jobs:
       - id: setup-qume
         name: Set up QEMU
         uses: docker/setup-qemu-action@v2
-        
       - id: setup-builder
         name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
@@ -45,7 +39,6 @@ jobs:
         run: |
           echo "Image ID: ${{ steps.build.outputs.imageid }} 
           echo "Image digest : ${{ steps.build.outputs.digest }} 
-
       - name: Connect to remote machine and deploy
         uses: appleboy/ssh-action@v0.1.7
         with:
@@ -62,8 +55,6 @@ jobs:
             docker pull ${{ secrets.DOKER_IMAGE_TAG }}
             docker compose up -d
             docker system prune -f
-        
-
       - name: Notify me
         uses: appleboy/telegram-action@master
         with:
