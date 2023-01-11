@@ -8,6 +8,16 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Notify me (commit)
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_NOTIFY_CHAT }}
+          token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
+          message: |
+            ${{ github.actor }} created commit:
+            Commit message: ${{ github.event.commits[0].message }}
+            Repository: ${{ github.repository }}
+            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
       - id: checkout
         name: Checkout
         uses: actions/checkout@v3
@@ -35,6 +45,14 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOKER_IMAGE_TAG }}
+      - name: Notify me (image update)
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_NOTIFY_CHAT }}
+          token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
+          message: |
+            New image tag `${{ secrets.DOKER_IMAGE_TAG }}`
+            See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
       - name: Print Image Name
         run: |
           echo "Image ID: ${{ steps.build.outputs.imageid }} 
@@ -61,12 +79,7 @@ jobs:
           to: ${{ secrets.TELEGRAM_NOTIFY_CHAT }}
           token: ${{ secrets.TELEGRAM_NOTIFY_TOKEN }}
           message: |
-            ${{ github.actor }} created commit:
-            Commit message: ${{ github.event.commits[0].message }}
-            
-            Repository: ${{ github.repository }}
-            
-            See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+            The bot application has been redeployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
 
 
     
