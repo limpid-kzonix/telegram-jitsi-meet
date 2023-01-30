@@ -15,6 +15,7 @@ logging.basicConfig(
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Hello {update.effective_user.first_name}. I'm a bot, please talk to me!")
 
+
 def get_meet_handler(meet_name_prefix):
     async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         meet_url = f"https://meet.jit.si/{meet_name_prefix}-{str(uuid.uuid4()).replace('-', '')}"
@@ -28,16 +29,19 @@ def get_meet_handler(meet_name_prefix):
             [InlineKeyboardButton(text='👉🏻 Join meeting 👈🏻', url=meet_url)],
         ])
         await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_msg, reply_markup=reply_markup, parse_mode='HTML', disable_web_page_preview=True)
-    
+
     return meet_handler
+
 
 def main():
     meet_name_prefix = os.getenv("MEET_NAME_PREFIX")
     tg_token = os.getenv("TG_BOT_TOKEN")
     application = ApplicationBuilder().token(tg_token).build()
     application.add_handler(CommandHandler('start', start_handler))
-    application.add_handler(CommandHandler('meet',  get_meet_handler(meet_name_prefix)))
+    application.add_handler(CommandHandler(
+        'meet',  get_meet_handler(meet_name_prefix)))
     application.run_polling()
+
 
 if __name__ == '__main__':
     load_dotenv()
