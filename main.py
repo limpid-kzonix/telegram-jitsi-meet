@@ -28,9 +28,9 @@ def get_meet_handler(meet_name_prefix):
         meet_url = f"https://meet.jit.si/{meet_name_prefix}-{str(uuid.uuid4()).replace('-', '')}"
         reply_msg = dedent(
             f"""
-            <b>💎 Start & join meetings 🍻 for free 🔓 </b> 
+            <b>💎 Start & join meetings 🍻 for free 🔓 </b>
             🕶 Premium video calls. Now available to everyone! 😁
-            👌🏼 <i>No account needed</i> 👋🏻 
+            👌🏼 <i>No account needed</i> 👋🏻
             <a href='{meet_url}'>👉🏻 Join meeting 👈🏻</a>
             """
         )
