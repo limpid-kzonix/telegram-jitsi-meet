@@ -1,17 +1,20 @@
+import argparse
 import logging
 import os
-import uuid
 import re
-import argparse
-
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
-from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
-from dotenv import load_dotenv
+import uuid
 from textwrap import dedent
+
+from dotenv import load_dotenv
+from telegram import InlineKeyboardButton
+from telegram import InlineKeyboardMarkup
+from telegram import Update
+from telegram.ext import ApplicationBuilder
+from telegram.ext import CommandHandler
+from telegram.ext import ContextTypes
 
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
-
 
 parser = argparse.ArgumentParser(usage="")
 parser.add_argument("-n", "--name", nargs="*", help="Specify 'name' argument.")
@@ -35,8 +38,8 @@ async def parse_args(context_args):
     except BaseException as e:
         logging.error(e.args)
 
-    names = iter(filter(lambda x: x is not None, names))
     names = iter(map(lambda x: " ".join(x), names))
+    names = iter(filter(lambda x: x is not None or x.strip() != "", names))
     return names
 
 
