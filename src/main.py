@@ -18,8 +18,7 @@ logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 
 parser = argparse.ArgumentParser(usage="")
 parser.add_argument("-n", "--name", nargs="*", help="Specify 'name' argument.")
-parser.add_argument("meet_name", type=str, nargs="*",
-                    help="An optional name argument")
+parser.add_argument("meet_name", type=str, nargs="*", help="An optional name argument")
 
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
