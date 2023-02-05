@@ -16,10 +16,12 @@ from telegram.ext import ContextTypes
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 
-
 parser = argparse.ArgumentParser(usage="")
 parser.add_argument("-n", "--name", nargs="*", help="Specify 'name' argument.")
-parser.add_argument("meet_name", type=str, nargs="*", help="An optional name argument")
+parser.add_argument("meet_name",
+                    type=str,
+                    nargs="*",
+                    help="An optional name argument")
 
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -53,8 +55,7 @@ async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     meet_name = f"{chat_name}---{str(uuid.uuid4())}"
     meet_name = re.sub("[^A-Za-z0-9]", "-", meet_name)
     meet_url = f"https://meet.jit.si/{meet_name}"
-    reply_msg = dedent(
-        f"""
+    reply_msg = dedent(f"""
         <b>✨✨{chat_name}✨✨</b>
         <b>📢Start & join🤳</b>
         🕶Premium video calls.
@@ -62,14 +63,11 @@ async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         👌🏼<i>No account needed</i>
 
         <a href='{meet_url}'> 🔗 Join meeting</a>
-        """
-    )
+        """)
 
-    reply_markup = InlineKeyboardMarkup(
-        [
-            [InlineKeyboardButton(text="👉🏻 Join 👈🏻", url=meet_url)],
-        ]
-    )
+    reply_markup = InlineKeyboardMarkup([
+        [InlineKeyboardButton(text="👉🏻 Join 👈🏻", url=meet_url)],
+    ])
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
         text=reply_msg,
