@@ -35,8 +35,8 @@ async def parse_args(context_args):
     except BaseException as e:
         logging.error(e.args)
 
-    names = iter(filter(lambda x: x is not None, names))
     names = iter(map(lambda x: " ".join(x), names))
+    names = iter(filter(lambda x: x is not None or x.strip() != "", names))
     return names
 
 
