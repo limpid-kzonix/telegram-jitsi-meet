@@ -6,12 +6,8 @@ import uuid
 from textwrap import dedent
 
 from dotenv import load_dotenv
-from telegram import InlineKeyboardButton
-from telegram import InlineKeyboardMarkup
-from telegram import Update
-from telegram.ext import ApplicationBuilder
-from telegram.ext import CommandHandler
-from telegram.ext import ContextTypes
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
