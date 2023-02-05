@@ -1,3 +1,11 @@
 {
-    "python.languageServer": "Jedi"
+    "python.languageServer": "Jedi",
+    "python.formatting.provider": "black",
+    "python.linting.banditEnabled": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.prospectorEnabled": true,
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.formatOnSave": true,
+    },
 }
