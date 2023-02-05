@@ -90,7 +90,7 @@ jobs:
             #notifications
             🚀 Deployed!
 
-            🤖 The bot has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
+            🤖 The application has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
 
 
     
