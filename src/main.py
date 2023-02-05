@@ -2,29 +2,49 @@ import logging
 import os
 import uuid
 import re
+import argparse
 
 from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 from dotenv import load_dotenv
 from textwrap import dedent
 
-logging.basicConfig(
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
-)
+LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
+
+
+parser = argparse.ArgumentParser(usage="")
+parser.add_argument("-n", "--name", nargs="*", help="Specify 'name' argument.")
+parser.add_argument("meet_name", type=str, nargs="*", help="An optional name argument")
 
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = f"Hello {update.effective_user.first_name}. I'm a bot, please talk to me!"
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
-        text=f"Hello {update.effective_user.first_name}. I'm a bot, please talk to me!",
+        text=text,
     )
 
 
+async def parse_args(context_args):
+    input_args = iter(map(lambda x: x.replace("—", "--"), context_args or []))
+    names = []
+    try:
+        ns = parser.parse_args(input_args)
+        names = [ns.name, ns.meet_name]
+    except BaseException as e:
+        logging.error(e.args)
+
+    names = iter(filter(lambda x: x is not None, names))
+    names = iter(map(lambda x: " ".join(x), names))
+    return names
+
+
 async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    args = context.args
-    # TODO: implement cli-like flag's parsiing (e.g --name)
+    names = await parse_args(context.args)
     chat_name = next(
-        iter(args), update.effective_chat.title or update.effective_chat.id
+        iter(names),
+        update.effective_chat.title or update.effective_chat.id,
     )
     meet_name = f"{chat_name}---{str(uuid.uuid4())}"
     meet_name = re.sub("[^A-Za-z0-9]", "-", meet_name)
