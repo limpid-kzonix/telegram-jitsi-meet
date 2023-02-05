@@ -7,7 +7,7 @@ services:
       dockerfile: .devcontainer/Dockerfile
 
     volumes:
-      - ../..:/workspaces:cached
+      - ../../telegram-jitsi-meet:/workspaces/telegram-jitsi-meet:cached
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
