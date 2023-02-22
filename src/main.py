@@ -16,12 +16,16 @@ from telegram.ext import ContextTypes
 LOG_FORMAT = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 logging.basicConfig(format=LOG_FORMAT, level=logging.INFO)
 
-parser = argparse.ArgumentParser(usage="")
+
+parser = argparse.ArgumentParser(
+    usage="/meet [-h] [-n [NAME ...]] [meet_name ...]", description="Jitsy Meet Bot"
+)
 parser.add_argument("-n", "--name", nargs="*", help="Specify 'name' argument.")
 parser.add_argument("meet_name",
                     type=str,
                     nargs="*",
                     help="An optional name argument")
+
 
 
 async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -32,8 +36,19 @@ async def start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
+def is_valid(name):
+    if name is None:
+        return False
+    elif type(name) is list:
+        return len(name) != 0
+    elif type(name) is str:
+        return name.strip() != ""
+    else:
+        return True
+
+
 async def parse_args(context_args):
-    input_args = iter(map(lambda x: x.replace("—", "--"), context_args or []))
+    input_args = list(map(lambda x: x.replace("—", "--"), context_args or []))
     names = []
     try:
         ns = parser.parse_args(input_args)
@@ -41,9 +56,19 @@ async def parse_args(context_args):
     except BaseException as e:
         logging.error(e.args)
 
-    names = iter(map(lambda x: " ".join(x), names))
-    names = iter(filter(lambda x: x is not None or x.strip() != "", names))
+    names = list(filter(is_valid, names))
+    names = list(map(lambda x: " ".join(x), names))
     return names
+
+
+async def help_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    reply_msg = dedent(
+        f"""
+        {parser.format_help()}
+        """
+    )
+
+    await context.bot.send_message(chat_id=update.effective_chat.id, text=reply_msg)
 
 
 async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -82,6 +107,7 @@ def main():
     application = ApplicationBuilder().token(tg_token).build()
     application.add_handler(CommandHandler("start", start_handler))
     application.add_handler(CommandHandler("meet", meet_handler))
+    application.add_handler(CommandHandler("help", help_handler))
     application.run_polling()
 
 
