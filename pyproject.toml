@@ -1,0 +1,49 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "telegram-jitsi-meet"
+version = "0.1.0"
+description = "Telegram bot that effortlessly crafts exquisite links for Jitsi Meet"
+authors = ["limpid-kzonix <balyszyn@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "telegram_jitsi_meet"}]
+
+[tool.poetry.scripts]
+start = "telegram_jitsi_meet:main"
+
+[tool.poetry.dependencies] # The main dependencies of your project go here
+python = "^3.10"
+python-telegram-bot = "^20.3"
+python-dotenv = "^1.0.0"
+
+# ------------------ Optional test dependencies ------------------
+
+[tool.poetry.group.test]  # This part can be left out
+
+[tool.poetry.group.test.dependencies]
+pytest = "^6.0.0"
+pytest-mock = "*"
+
+# ------------------ Optional dev dependencies ------------------
+
+[tool.poetry.group.dev]  # This part can be left out
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^6.0.0"
+pytest-mock = "*"
+
+# ------------------ Optional docs dependencies ------------------
+
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+mkdocs = "*"
+
+
+
+
+

@@ -2,7 +2,7 @@ name: Docker Image CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-and-deploy:
@@ -54,15 +54,15 @@ jobs:
           message: |
             #notifications
             🐳 New image tag published!
-            
+
              - Image ID: ${{ secrets.DOKER_IMAGE_TAG }} 
              - Image digest: ${{ steps.build.outputs.digest }}
-            
+
             🐋 See changes: https://hub.docker.com/r/limpidkzonix/telegram-jitsi-meet/tags
       - name: Print Image Name
         run: |
           echo "Image ID: ${{ steps.build.outputs.imageid }} 
-          echo "Image digest : ${{ steps.build.outputs.digest }} 
+          echo "Image digest : ${{ steps.build.outputs.digest }}
       - id: deploy
         name: Connect to remote machine and deploy
         uses: appleboy/ssh-action@v0.1.7
@@ -91,6 +91,3 @@ jobs:
             🚀 Deployed!
 
             🤖 The application has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
-
-
-    
