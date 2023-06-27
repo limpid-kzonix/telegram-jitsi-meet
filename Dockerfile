@@ -25,6 +25,12 @@ RUN poetry export -f requirements.txt --output requirements.txt
 
 FROM python:3.11-slim
 
+RUN addgroup --gid 1000 userapp
+RUN adduser --home /home/userapp --gid 1000 --uid 1000 --disabled-password userapp
+USER userapp
+
+WORKDIR /home/userapp
+
 COPY --from=builder requirements.txt ./requirements.txt
 COPY src/ ./src
 
