@@ -17,7 +17,8 @@ ENV PIP_NO_CACHE_DIR=off \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1
 
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml ./pyproject.toml
+COPY poetry.lock ./poetry.lock
 RUN poetry export -f requirements.txt --output requirements.txt 
 
 
