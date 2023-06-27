@@ -17,8 +17,6 @@ ENV PIP_NO_CACHE_DIR=off \
     POETRY_VIRTUALENVS_CREATE=false \
     POETRY_NO_INTERACTION=1
 
-ENV PATH="${PATH}:${USER}/.local/bin"
-
 COPY pyproject.toml poetry.lock ./
 RUN poetry export -f requirements.txt --output requirements.txt 
 
@@ -33,6 +31,8 @@ WORKDIR /home/userapp
 
 COPY --from=builder requirements.txt ./requirements.txt
 COPY src/ ./src
+
+ENV PATH="${PATH}:${USER}/.local/bin"
 
 RUN pip install --no-cache-dir --user -r requirements.txt
 # 
