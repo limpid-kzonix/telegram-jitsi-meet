@@ -102,7 +102,8 @@ async def meet_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 
-def main():
+def start():
+    load_dotenv()
     tg_token = os.getenv("TG_BOT_TOKEN")
     application = ApplicationBuilder().token(tg_token).build()
     application.add_handler(CommandHandler("start", start_handler))
@@ -110,7 +111,7 @@ def main():
     application.add_handler(CommandHandler("help", help_handler))
     application.run_polling()
 
-
 if __name__ == "__main__":
-    load_dotenv()
-    main()
+    start()
+
+

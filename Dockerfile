@@ -1,14 +1,18 @@
-FROM python:slim
+FROM limpidkzonix/poetry-builder:latest as builder
 
-RUN addgroup --gid 1000 userapp
-RUN adduser --home /home/userapp --gid 1000 --uid 1000 --disabled-password userapp
-USER userapp
+ENV PATH "${PATH}:${USER}/.local/bin"
 
-WORKDIR /home/userapp
-COPY ./src/main.py ./
-COPY requirements.txt ./
+COPY pyproject.toml poetry.lock ./
+RUN poetry export -f requirements.txt --output requirements.txt 
 
-RUN export PATH="$PATH:/home/userapp/.local/bin"
+
+FROM python:3.11-slim
+
+COPY --from=builder requirements.txt ./requirements.txt
+COPY src/ ./src
+
 RUN pip install --no-cache-dir --user -r requirements.txt
-
-CMD [ "python", "./main.py" ]
+# 
+# poetry config virtualenvs.create false
+# 
+CMD [ "python", "./src/telegram_jitsi_meet/main.py" ]

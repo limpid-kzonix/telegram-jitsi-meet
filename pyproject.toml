@@ -8,11 +8,12 @@ version = "0.1.0"
 description = "Telegram bot that effortlessly crafts exquisite links for Jitsi Meet"
 authors = ["limpid-kzonix <balyszyn@gmail.com>"]
 license = "MIT"
-readme = "README.md"
-packages = [{include = "telegram_jitsi_meet"}]
+packages = [
+    { include = "src/telegram_jitsi_meet/**/*.py" }
+]
 
 [tool.poetry.scripts]
-start = "telegram_jitsi_meet:main"
+start = "src.telegram_jitsi_meet.main:start"
 
 [tool.poetry.dependencies] # The main dependencies of your project go here
 python = "^3.10"
