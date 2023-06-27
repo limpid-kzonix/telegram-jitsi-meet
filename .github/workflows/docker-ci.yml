@@ -91,3 +91,5 @@ jobs:
             🚀 Deployed!
 
             🤖 The application has been re-deployed with the tag `${{ secrets.DOKER_IMAGE_TAG }}`
+
+            Check this out @https://t.me/jitsi_meet_link_generator_bot
