@@ -1,6 +1,23 @@
 FROM limpidkzonix/poetry-builder:latest as builder
 
-ENV PATH "${PATH}:${USER}/.local/bin"
+# keeps Python from buffering our standard output stream,
+# which means that logs can be delivered to the user quickly.
+ENV PYTHONUNBUFFERED 1
+
+# DEBIAN_FRONTEND=noninteractive prevents the installer from waiting for user input
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Poetry installation path
+ENV POETRY_HOME=/opt/poetry
+
+# The temporary directory used by pip during the installation process is not needed after the installation is complete.
+ENV PIP_NO_CACHE_DIR=off \
+    PIP_DISABLE_PIP_VERSION_CHECK=on \
+    PIP_DEFAULT_TIMEOUT=100 \
+    POETRY_VIRTUALENVS_CREATE=false \
+    POETRY_NO_INTERACTION=1
+
+ENV PATH="${PATH}:${USER}/.local/bin"
 
 COPY pyproject.toml poetry.lock ./
 RUN poetry export -f requirements.txt --output requirements.txt 
