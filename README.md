@@ -4,7 +4,10 @@
 </p>
 
 <p align="center">
-  <p><a href="https://t.me/jitsi_meet_link_generator_bot">@jitsi_meet_link_generator_bot</a></p>
+  <a href="https://t.me/jitsi_meet_link_generator_bot">@jitsi_meet_link_generator_bot</a>
+</p>
+
+<p align="center">
   <h3>Telegram bot that effortlessly crafts exquisite links for Jitsi Meet</h3>
 </p>
 
