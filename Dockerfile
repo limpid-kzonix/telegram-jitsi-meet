@@ -19,7 +19,7 @@ ENV PIP_NO_CACHE_DIR=off \
 
 COPY pyproject.toml ./pyproject.toml
 COPY poetry.lock ./poetry.lock
-RUN poetry export -f requirements.txt --output requirements.txt 
+RUN poetry export -f requirements.txt --output requirements.txt
 
 
 FROM python:3.13.0rc2-slim
@@ -36,7 +36,7 @@ COPY src/ ./src
 ENV PATH="${PATH}:${USER}/.local/bin"
 
 RUN pip install --no-cache-dir --user -r requirements.txt
-# 
+#
 # poetry config virtualenvs.create false
-# 
+#
 CMD [ "python", "./src/telegram_jitsi_meet/main.py" ]
